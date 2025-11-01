@@ -1,22 +1,38 @@
-class JardinMovilRomantico {
+class JardinParaMika {
     constructor() {
         this.canvas = document.getElementById('jardinCanvas');
         this.ctx = this.canvas.getContext('2d');
         this.flores = [];
         this.estrellas = [];
         this.burbujas = [];
+        this.tiempoRotacion = 15000;
+        this.mensajesPorRonda = 3;
+        this.velocidadBurbujas = 3.5;
+        
         this.mensajesRomanticos = [
-            "Cada flor representa un momento especial que hemos compartido 🌸",
-            "Tu sonrisa ilumina mi mundo como estas flores ✨",
-            "Eres más hermosa que el jardín más perfecto 💖",
-            "Mi cariño por ti crece cada día como estas flores 🌱",
-            "Eres la flor más hermosa en el jardín de mi vida 🌹",
-            "Cada latido de mi corazón es un pétalo para ti 💓",
-            "Tu amor es el sol que hace crecer este jardín ☀️",
-            "Eres mi sueño más bonito hecho realidad 🌙",
-            "Contigo hasta el infinito se queda corto 🚀",
-            "Eres la razón por la que mi mundo tiene colores 🌈"
+            "Te quiero mucho, Mika 💖",
+            "Desde Colombia con amor 🇨🇴❤️",
+            "Nuestro Neverland especial 🎮",
+            "Eres una amiga increíble ✨",
+            "Nuestra 'boda' en Neverland 💍",
+            "Venezuela y Colombia unidas 🇻🇪🇨🇴",
+            "Tu amistad es un tesoro 🌟",
+            "Eres más dulce que el café ☕",
+            "Nuestras aventuras en el juego 🎯",
+            "Tu sonrisa ilumina mi día 😊",
+            "Amigos en la vida y en el juego 🎮",
+            "Eres única y especial 🌈",
+            "Gracias por ser mi amiga 🙏",
+            "Nuestra conexión es mágica 🔮",
+            "Eres el sol de mi amistad ☀️",
+            "Siempre aquí para ti 🤗",
+            "Nuestros momentos son únicos 💫",
+            "Eres simplemente amazing 🎉",
+            "De Colombia para Venezuela 🌎",
+            "Te aprecio más de lo que imaginas 💝"
         ];
+
+        this.mensajesUsados = new Set();
         
         this.inicializar();
     }
@@ -25,11 +41,11 @@ class JardinMovilRomantico {
         this.resize();
         this.inicializarEstrellas();
         this.crearFloresIniciales();
-        this.crearBurbujasIniciales();
-        this.animar();
         this.actualizarFecha();
+        this.mostrarMensajeColombia();
         
-        // Event listeners para móvil
+        this.iniciarRotacionMensajes();
+        
         window.addEventListener('resize', () => this.resize());
         this.canvas.addEventListener('click', (e) => this.crearFlorEnClick(e));
         this.canvas.addEventListener('touchstart', (e) => {
@@ -38,8 +54,199 @@ class JardinMovilRomantico {
             this.crearFlorEnClick(touch);
         }, { passive: false });
 
-        // Iniciar el movimiento de las burbujas
+        this.animar();
         this.moverBurbujas();
+    }
+
+    mostrarMensajeColombia() {
+        const mensajeColombia = document.getElementById('mensajeColombia');
+        setTimeout(() => {
+            mensajeColombia.style.opacity = '1';
+            mensajeColombia.style.transform = 'translateX(-50%) scale(1)';
+        }, 1000);
+    }
+
+    iniciarRotacionMensajes() {
+        this.crearNuevaRondaMensajes();
+        
+        setInterval(() => {
+            this.rotarMensajes();
+        }, this.tiempoRotacion);
+    }
+
+    crearNuevaRondaMensajes() {
+        this.removerTodosLosMensajes();
+        
+        const mensajesDisponibles = this.mensajesRomanticos.filter(
+            mensaje => !this.mensajesUsados.has(mensaje)
+        );
+        
+        if (mensajesDisponibles.length < this.mensajesPorRonda) {
+            this.mensajesUsados.clear();
+        }
+        
+        const mensajesSeleccionados = [];
+        for (let i = 0; i < this.mensajesPorRonda; i++) {
+            let mensaje;
+            let intentos = 0;
+            
+            do {
+                mensaje = this.mensajesRomanticos[
+                    Math.floor(Math.random() * this.mensajesRomanticos.length)
+                ];
+                intentos++;
+            } while (
+                (this.mensajesUsados.has(mensaje) || mensajesSeleccionados.includes(mensaje)) && 
+                intentos < 20
+            );
+            
+            if (mensaje && !mensajesSeleccionados.includes(mensaje)) {
+                mensajesSeleccionados.push(mensaje);
+                this.mensajesUsados.add(mensaje);
+            }
+        }
+        
+        mensajesSeleccionados.forEach((mensaje, index) => {
+            setTimeout(() => {
+                this.crearBurbuja(mensaje);
+            }, index * 300);
+        });
+    }
+
+    rotarMensajes() {
+        this.burbujas.forEach((burbuja, index) => {
+            setTimeout(() => {
+                burbuja.element.classList.add('saliendo');
+                setTimeout(() => {
+                    if (burbuja.element.parentNode) {
+                        burbuja.element.parentNode.removeChild(burbuja.element);
+                    }
+                }, 600);
+            }, index * 200);
+        });
+
+        setTimeout(() => {
+            this.burbujas = [];
+            this.crearNuevaRondaMensajes();
+        }, 1000);
+    }
+
+    removerTodosLosMensajes() {
+        this.burbujas.forEach(burbuja => {
+            if (burbuja.element.parentNode) {
+                burbuja.element.parentNode.removeChild(burbuja.element);
+            }
+        });
+        this.burbujas = [];
+    }
+
+    crearBurbuja(mensajeEspecifico = null) {
+        const mensaje = mensajeEspecifico || this.mensajesRomanticos[
+            Math.floor(Math.random() * this.mensajesRomanticos.length)
+        ];
+        
+        const burbujaElement = document.createElement('div');
+        burbujaElement.className = 'burbuja entrando activa';
+        burbujaElement.innerHTML = this.procesarEmojisEspeciales(mensaje);
+        
+        document.getElementById('burbujasContainer').appendChild(burbujaElement);
+        
+        burbujaElement.offsetHeight;
+        
+        const width = Math.min(260, this.canvas.width * 0.65);
+        const height = 70;
+        
+        const speedBase = this.velocidadBurbujas;
+        const speedX = (Math.random() - 0.5) * speedBase * 2;
+        const speedY = (Math.random() - 0.5) * speedBase * 2;
+        
+        const burbuja = {
+            element: burbujaElement,
+            x: Math.random() * (this.canvas.width - width),
+            y: Math.random() * (this.canvas.height - height - 120) + 80,
+            width: width,
+            height: height,
+            speedX: Math.abs(speedX) < 1 ? (speedX < 0 ? -1 : 1) : speedX,
+            speedY: Math.abs(speedY) < 1 ? (speedY < 0 ? -1 : 1) : speedY,
+            maxX: this.canvas.width - width,
+            maxY: this.canvas.height - height,
+            tiempoCreacion: Date.now()
+        };
+        
+        burbujaElement.style.left = burbuja.x + 'px';
+        burbujaElement.style.top = burbuja.y + 'px';
+        
+        this.burbujas.push(burbuja);
+        
+        setTimeout(() => {
+            if (this.burbujas.includes(burbuja)) {
+                burbujaElement.classList.add('saliendo');
+                setTimeout(() => {
+                    if (burbujaElement.parentNode) {
+                        burbujaElement.parentNode.removeChild(burbujaElement);
+                        this.burbujas = this.burbujas.filter(b => b !== burbuja);
+                    }
+                }, 600);
+            }
+        }, this.tiempoRotacion);
+        
+        return burbuja;
+    }
+
+    procesarEmojisEspeciales(texto) {
+        return texto
+            .replace(/🇨🇴/g, '<span class="bandera-colombia">🇨🇴</span>')
+            .replace(/🇻🇪/g, '<span class="bandera-venezuela">🇻🇪</span>')
+            .replace(/💖/g, '<span style="font-size: 1.1em">💖</span>')
+            .replace(/🎮/g, '<span style="font-size: 1.1em">🎮</span>');
+    }
+
+    moverBurbujas() {
+        this.burbujas.forEach(burbuja => {
+            if (!burbuja.element) return;
+            
+            burbuja.x += burbuja.speedX;
+            burbuja.y += burbuja.speedY;
+            
+            let rebote = false;
+            
+            if (burbuja.x <= 0) {
+                burbuja.speedX = Math.abs(burbuja.speedX) * 0.95;
+                burbuja.x = 0;
+                rebote = true;
+            } else if (burbuja.x >= burbuja.maxX) {
+                burbuja.speedX = -Math.abs(burbuja.speedX) * 0.95;
+                burbuja.x = burbuja.maxX;
+                rebote = true;
+            }
+            
+            if (burbuja.y <= 60) {
+                burbuja.speedY = Math.abs(burbuja.speedY) * 0.95;
+                burbuja.y = 60;
+                rebote = true;
+            } else if (burbuja.y >= burbuja.maxY) {
+                burbuja.speedY = -Math.abs(burbuja.speedY) * 0.95;
+                burbuja.y = burbuja.maxY;
+                rebote = true;
+            }
+            
+            burbuja.element.style.left = burbuja.x + 'px';
+            burbuja.element.style.top = burbuja.y + 'px';
+            
+            const flotacion = Math.sin(Date.now() * 0.003 + burbuja.x * 0.01) * 4;
+            burbuja.element.style.transform = `translateY(${flotacion}px) scale(1)`;
+            
+            if (rebote) {
+                burbuja.element.style.transform = `translateY(${flotacion}px) rotate(${burbuja.speedX * 0.5}deg)`;
+                setTimeout(() => {
+                    if (burbuja.element) {
+                        burbuja.element.style.transform = `translateY(${flotacion}px) rotate(0deg)`;
+                    }
+                }, 200);
+            }
+        });
+        
+        requestAnimationFrame(() => this.moverBurbujas());
     }
 
     resize() {
@@ -49,22 +256,29 @@ class JardinMovilRomantico {
         this.canvas.width = width;
         this.canvas.height = height;
         
-        // Ajustar las burbujas existentes a los nuevos límites
         this.burbujas.forEach(burbuja => {
-            burbuja.maxX = width - burbuja.element.offsetWidth;
-            burbuja.maxY = height - burbuja.element.offsetHeight;
+            if (burbuja.element) {
+                burbuja.maxX = width - burbuja.element.offsetWidth;
+                burbuja.maxY = height - burbuja.element.offsetHeight;
+                
+                burbuja.x = Math.max(0, Math.min(burbuja.maxX, burbuja.x));
+                burbuja.y = Math.max(60, Math.min(burbuja.maxY, burbuja.y));
+                
+                burbuja.element.style.left = burbuja.x + 'px';
+                burbuja.element.style.top = burbuja.y + 'px';
+            }
         });
     }
 
     inicializarEstrellas() {
         this.estrellas = [];
-        const cantidad = Math.min(80, Math.floor((this.canvas.width * this.canvas.height) / 4000));
+        const cantidad = Math.min(70, Math.floor((this.canvas.width * this.canvas.height) / 4000));
         
         for (let i = 0; i < cantidad; i++) {
             this.estrellas.push({
                 x: Math.random() * this.canvas.width,
                 y: Math.random() * this.canvas.height,
-                size: Math.random() * 1.5 + 0.5,
+                size: Math.random() * 1.3 + 0.5,
                 brightness: Math.random() * 0.5 + 0.3,
                 speed: Math.random() * 0.03 + 0.01
             });
@@ -72,8 +286,8 @@ class JardinMovilRomantico {
     }
 
     crearFloresIniciales() {
-        const cantidad = Math.min(5, Math.floor(this.canvas.width / 150));
-        const margin = 100;
+        const cantidad = Math.min(4, Math.floor(this.canvas.width / 150));
+        const margin = 80;
         
         for (let i = 0; i < cantidad; i++) {
             const x = margin + Math.random() * (this.canvas.width - 2 * margin);
@@ -91,7 +305,7 @@ class JardinMovilRomantico {
         const flor = {
             x: x,
             y: y,
-            tamaño: Math.random() * 20 + 15,
+            tamaño: Math.random() * 18 + 12,
             color: colores[Math.floor(Math.random() * colores.length)],
             pétalos: Math.floor(Math.random() * 6) + 5,
             tiempo: 0,
@@ -102,84 +316,6 @@ class JardinMovilRomantico {
 
         this.flores.push(flor);
         return flor;
-    }
-
-    crearBurbujasIniciales() {
-        const cantidad = Math.min(4, Math.floor(this.canvas.width / 200));
-        
-        for (let i = 0; i < cantidad; i++) {
-            setTimeout(() => {
-                this.crearBurbuja();
-            }, i * 1000);
-        }
-    }
-
-    crearBurbuja() {
-        const mensaje = this.mensajesRomanticos[
-            Math.floor(Math.random() * this.mensajesRomanticos.length)
-        ];
-        
-        const burbujaElement = document.createElement('div');
-        burbujaElement.className = 'burbuja';
-        burbujaElement.textContent = mensaje;
-        burbujaElement.style.opacity = '0';
-        
-        document.getElementById('burbujasContainer').appendChild(burbujaElement);
-        
-        // Tamaño de la burbuja
-        const width = Math.min(280, this.canvas.width * 0.7);
-        const height = 80;
-        
-        const burbuja = {
-            element: burbujaElement,
-            x: Math.random() * (this.canvas.width - width),
-            y: Math.random() * (this.canvas.height - height - 100) + 50,
-            width: width,
-            height: height,
-            speedX: (Math.random() - 0.5) * 2,
-            speedY: (Math.random() - 0.5) * 2,
-            maxX: this.canvas.width - width,
-            maxY: this.canvas.height - height,
-            opacity: 0
-        };
-        
-        // Animación de entrada
-        setTimeout(() => {
-            burbujaElement.style.opacity = '1';
-            burbujaElement.style.transform = 'scale(1)';
-            burbuja.opacity = 1;
-        }, 100);
-        
-        this.burbujas.push(burbuja);
-        return burbuja;
-    }
-
-    moverBurbujas() {
-        this.burbujas.forEach(burbuja => {
-            // Actualizar posición
-            burbuja.x += burbuja.speedX;
-            burbuja.y += burbuja.speedY;
-            
-            // Rebote en los bordes
-            if (burbuja.x <= 0 || burbuja.x >= burbuja.maxX) {
-                burbuja.speedX *= -1;
-                burbuja.x = Math.max(0, Math.min(burbuja.maxX, burbuja.x));
-            }
-            
-            if (burbuja.y <= 50 || burbuja.y >= burbuja.maxY) {
-                burbuja.speedY *= -1;
-                burbuja.y = Math.max(50, Math.min(burbuja.maxY, burbuja.y));
-            }
-            
-            // Aplicar posición
-            burbuja.element.style.left = burbuja.x + 'px';
-            burbuja.element.style.top = burbuja.y + 'px';
-            
-            // Efecto de flotación suave
-            burbuja.element.style.transform = `translateY(${Math.sin(Date.now() * 0.002 + burbuja.x) * 3}px)`;
-        });
-        
-        requestAnimationFrame(() => this.moverBurbujas());
     }
 
     dibujarEstrellas() {
@@ -204,30 +340,30 @@ class JardinMovilRomantico {
 
         const crecimiento = flor.crecimiento;
         const tamaño = flor.tamaño * crecimiento;
-        const oscilacion = Math.sin(flor.tiempo * flor.oscilacion) * 5;
+        const oscilacion = Math.sin(flor.tiempo * flor.oscilacion) * 4;
 
         // Tallo
         this.ctx.strokeStyle = '#2e8b57';
         this.ctx.lineWidth = 2 * crecimiento;
         this.ctx.beginPath();
         this.ctx.moveTo(flor.x, flor.y);
-        this.ctx.lineTo(flor.x + oscilacion, flor.y - 80 * crecimiento);
+        this.ctx.lineTo(flor.x + oscilacion, flor.y - 70 * crecimiento);
         this.ctx.stroke();
 
         // Hojas
-        this.dibujarHoja(flor.x + oscilacion, flor.y - 30 * crecimiento, 15 * crecimiento, -1);
-        this.dibujarHoja(flor.x + oscilacion, flor.y - 50 * crecimiento, 12 * crecimiento, 1);
+        this.dibujarHoja(flor.x + oscilacion, flor.y - 25 * crecimiento, 12 * crecimiento, -1);
+        this.dibujarHoja(flor.x + oscilacion, flor.y - 45 * crecimiento, 10 * crecimiento, 1);
 
         // Centro de la flor
         this.ctx.fillStyle = '#ffd700';
         this.ctx.beginPath();
-        this.ctx.arc(flor.x + oscilacion, flor.y - 80 * crecimiento, tamaño * 0.25, 0, Math.PI * 2);
+        this.ctx.arc(flor.x + oscilacion, flor.y - 70 * crecimiento, tamaño * 0.2, 0, Math.PI * 2);
         this.ctx.fill();
 
         // Pétalos
         for (let i = 0; i < flor.pétalos; i++) {
             const angle = (i / flor.pétalos) * Math.PI * 2 + flor.tiempo * 0.0005;
-            this.dibujarPétalo(flor.x + oscilacion, flor.y - 80 * crecimiento, tamaño, angle, flor.color);
+            this.dibujarPétalo(flor.x + oscilacion, flor.y - 70 * crecimiento, tamaño, angle, flor.color);
         }
 
         flor.tiempo += 16;
@@ -284,8 +420,7 @@ class JardinMovilRomantico {
         
         this.crearFlorCompleja(x, y);
         
-        // Ocasionalmente crear una burbuja nueva al tocar
-        if (Math.random() > 0.7 && this.burbujas.length < 8) {
+        if (Math.random() > 0.7 && this.burbujas.length < 6) {
             setTimeout(() => this.crearBurbuja(), 500);
         }
     }
@@ -294,11 +429,9 @@ class JardinMovilRomantico {
         const ahora = new Date();
         const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
         const fechaFormateada = ahora.toLocaleDateString('es-ES', opciones);
-        document.getElementById('fecha').textContent = fechaFormateada;
     }
 
     animar() {
-        // Fondo con gradiente
         const gradient = this.ctx.createRadialGradient(
             this.canvas.width / 2, this.canvas.height / 2, 0,
             this.canvas.width / 2, this.canvas.height / 2, Math.max(this.canvas.width, this.canvas.height) / 2
@@ -317,7 +450,7 @@ class JardinMovilRomantico {
 
 // Inicializar cuando la página cargue
 window.addEventListener('load', () => {
-    new JardinMovilRomantico();
+    new JardinParaMika();
 });
 
 // Prevenir zoom con doble toque
