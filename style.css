@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #000010 0%, #1a1a2e 50%, #16213e 100%);
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    position: relative;
+    height: 100vh;
+}
+
+#jardinCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.mensajes {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 20px;
+    color: white;
+}
+
+.mensajes h1 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+    animation: latido 3s ease-in-out infinite;
+}
+
+.nombre-amor {
+    color: #ff6b6b;
+    background: linear-gradient(45deg, #ff6b6b, #ffd700, #da70d6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+}
+
+.mensaje-flotante {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 15px 25px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 1.1em;
+    max-width: 300px;
+    animation: flotar 6s ease-in-out infinite;
+    z-index: 3;
+    box-shadow: 0 8px 32px rgba(255, 107, 107, 0.3);
+}
+
+#mensaje1 {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+#mensaje2 {
+    top: 60%;
+    right: 10%;
+    animation-delay: 1.5s;
+}
+
+#mensaje3 {
+    top: 40%;
+    left: 5%;
+    animation-delay: 3s;
+}
+
+#mensaje4 {
+    top: 80%;
+    right: 15%;
+    animation-delay: 4.5s;
+}
+
+.fecha-especial {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #da70d6;
+    font-size: 1.2em;
+    text-shadow: 0 0 10px rgba(218, 112, 214, 0.7);
+    z-index: 3;
+}
+
+.instrucciones {
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #87ceeb;
+    font-size: 1em;
+    z-index: 3;
+    animation: parpadeo 2s ease-in-out infinite;
+}
+
+@keyframes latido {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes flotar {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+}
+
+@keyframes parpadeo {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Estrellas en el fondo */
+.estrella {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    animation: brillar 4s ease-in-out infinite;
+}
+
+@keyframes brillar {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .mensajes h1 {
+        font-size: 1.8em;
+    }
+    
+    .mensaje-flotante {
+        font-size: 0.9em;
+        padding: 10px 15px;
+    }
+}
