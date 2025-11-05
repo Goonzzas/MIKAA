@@ -21,43 +21,30 @@ body {
 }
 
 #lyrics {
-  font-size: 28px;
+  font-size: 24px;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   color: white;
   position: absolute;
-  margin-bottom: 20%;
+  top: 75%;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1;
   font-weight: bold;
   letter-spacing: 4px;
+  text-align: center;
+  width: 90%;
 }
 
 @media only screen and (max-width: 600px) {
   #lyrics {
-      font-size: 14px;
-      margin-bottom: 530px;
-      letter-spacing: 3px;
+      font-size: 16px;
+      top: 70%;
+      letter-spacing: 2px;
   }
 }
 
 .titulo {
-  margin-bottom: 180px;
-  font-family: "Arial Narrow", Arial, sans-serif;
-  color: yellow;
-  position: absolute;
-  font-weight: bold;
-  letter-spacing: 10px;
-  opacity: 0;
-  animation: fadeIn 3s ease-in-out forwards;
-  text-align: center;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  display: none;
 }
 
 .night {
@@ -103,132 +90,61 @@ body {
     linear-gradient(90deg, rgb(0, 255, 250), rgb(240, 240, 240));
 }
 
+/* CORREGIR POSICIÓN DE FLORES */
 .flowers {
   position: relative;
   transform: scale(0.9);
+  margin-bottom: 0;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
-@media only screen and (max-width: 600px) {
-  .flowers {
-      font-size: 14px;
-      margin-bottom: 35%;
-      letter-spacing: 3px;
-      transform: scale(1.0);
-  }
-}
-
+/* REPOSICIONAR FLORES MÁS ABAJO Y CENTRADAS */
 .flower {
   position: absolute;
-  bottom: 10vmin;
+  bottom: 15vmin;
   transform-origin: bottom center;
   z-index: 10;
   --fl-speed: 0.8s;
 }
 
+/* POSICIÓN ESPECÍFICA PARA CADA FLOR */
 .flower--1 {
+  left: 25%;
+  bottom: 20vmin;
   -webkit-animation: moving-flower-1 4s linear infinite;
   animation: moving-flower-1 4s linear infinite;
 }
 
-.flower--1 .flower__line {
-  height: 70vmin;
-  -webkit-animation-delay: 0.3s;
-  animation-delay: 0.3s;
-}
-
-.flower--1 .flower__line__leaf--1 {
-  -webkit-animation: blooming-leaf-right var(--fl-speed) 1.6s backwards;
-  animation: blooming-leaf-right var(--fl-speed) 1.6s backwards;
-}
-
-.flower--1 .flower__line__leaf--2 {
-  -webkit-animation: blooming-leaf-right var(--fl-speed) 1.4s backwards;
-  animation: blooming-leaf-right var(--fl-speed) 1.4s backwards;
-}
-
-.flower--1 .flower__line__leaf--3 {
-  -webkit-animation: blooming-leaf-left var(--fl-speed) 1.2s backwards;
-  animation: blooming-leaf-left var(--fl-speed) 1.2s backwards;
-}
-
-.flower--1 .flower__line__leaf--4 {
-  -webkit-animation: blooming-leaf-left var(--fl-speed) 1s backwards;
-  animation: blooming-leaf-left var(--fl-speed) 1s backwards;
-}
-
-.flower--1 .flower__line__leaf--5 {
-  -webkit-animation: blooming-leaf-right var(--fl-speed) 1.8s backwards;
-  animation: blooming-leaf-right var(--fl-speed) 1.8s backwards;
-}
-
-.flower--1 .flower__line__leaf--6 {
-  -webkit-animation: blooming-leaf-left var(--fl-speed) 2s backwards;
-  animation: blooming-leaf-left var(--fl-speed) 2s backwards;
-}
-
 .flower--2 {
   left: 50%;
-  transform: rotate(20deg);
+  bottom: 15vmin;
+  transform: rotate(20deg) translateX(-50%);
   -webkit-animation: moving-flower-2 4s linear infinite;
   animation: moving-flower-2 4s linear infinite;
 }
 
-.flower--2 .flower__line {
-  height: 60vmin;
-  -webkit-animation-delay: 0.6s;
-  animation-delay: 0.6s;
-}
-
-.flower--2 .flower__line__leaf--1 {
-  -webkit-animation: blooming-leaf-right var(--fl-speed) 1.9s backwards;
-  animation: blooming-leaf-right var(--fl-speed) 1.9s backwards;
-}
-
-.flower--2 .flower__line__leaf--2 {
-  -webkit-animation: blooming-leaf-right var(--fl-speed) 1.7s backwards;
-  animation: blooming-leaf-right var(--fl-speed) 1.7s backwards;
-}
-
-.flower--2 .flower__line__leaf--3 {
-  -webkit-animation: blooming-leaf-left var(--fl-speed) 1.5s backwards;
-  animation: blooming-leaf-left var(--fl-speed) 1.5s backwards;
-}
-
-.flower--2 .flower__line__leaf--4 {
-  -webkit-animation: blooming-leaf-left var(--fl-speed) 1.3s backwards;
-  animation: blooming-leaf-left var(--fl-speed) 1.3s backwards;
-}
-
 .flower--3 {
-  left: 50%;
+  left: 75%;
+  bottom: 18vmin;
   transform: rotate(-15deg);
   -webkit-animation: moving-flower-3 4s linear infinite;
   animation: moving-flower-3 4s linear infinite;
 }
 
+/* AJUSTAR ALTURA DE LOS TALLOS */
+.flower--1 .flower__line {
+  height: 50vmin;
+}
+
+.flower--2 .flower__line {
+  height: 45vmin;
+}
+
 .flower--3 .flower__line {
-  -webkit-animation-delay: 0.9s;
-  animation-delay: 0.9s;
-}
-
-.flower--3 .flower__line__leaf--1 {
-  -webkit-animation: blooming-leaf-right var(--fl-speed) 2.5s backwards;
-  animation: blooming-leaf-right var(--fl-speed) 2.5s backwards;
-}
-
-.flower--3 .flower__line__leaf--2 {
-  -webkit-animation: blooming-leaf-right var(--fl-speed) 2.3s backwards;
-  animation: blooming-leaf-right var(--fl-speed) 2.3s backwards;
-}
-
-.flower--3 .flower__line__leaf--3 {
-  -webkit-animation: blooming-leaf-left var(--fl-speed) 2.1s backwards;
-  animation: blooming-leaf-left var(--fl-speed) 2.1s backwards;
-}
-
-.flower--3 .flower__line__leaf--4 {
-  -webkit-animation: blooming-leaf-left var(--fl-speed) 1.9s backwards;
-  animation: blooming-leaf-left var(--fl-speed) 1.9s backwards;
+  height: 48vmin;
 }
 
 .flower__leafs {
@@ -272,7 +188,7 @@ body {
   width: 8vmin;
   height: 11vmin;
   border-radius: 51% 49% 47% 53%/44% 45% 55% 69%;
-  background-color: #fddd25; /* Amarillo por defecto */
+  background-color: #fddd25;
   transform-origin: bottom center;
   opacity: 0.9;
   box-shadow: inset 0 0 2vmin rgba(255, 255, 255, 0.5);
@@ -1818,4 +1734,27 @@ body {
 .container * {
   -webkit-animation-play-state: paused !important;
   animation-play-state: paused !important;
+}
+
+/* AJUSTES RESPONSIVE PARA MÓVIL */
+@media only screen and (max-width: 600px) {
+    .flowers {
+        transform: scale(0.7);
+        height: 50vh;
+    }
+    
+    .flower--1 {
+        left: 15%;
+        bottom: 15vmin;
+    }
+    
+    .flower--2 {
+        left: 50%;
+        bottom: 10vmin;
+    }
+    
+    .flower--3 {
+        left: 85%;
+        bottom: 12vmin;
+    }
 }
