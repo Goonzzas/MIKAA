@@ -99,6 +99,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  z-index: 100;
 }
 
 /* REPOSICIONAR FLORES MÁS ABAJO Y CENTRADAS */

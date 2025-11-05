@@ -42,3 +42,40 @@ function updateLyrics() {
 }
 
 setInterval(updateLyrics, 1000);
+
+// Efecto de escritura para el mensaje principal
+const textos = {
+  titulo: "Para Mika 💖",
+  subtitulo: "Desde Colombia con cariño te mando estas flores",
+  mensaje: "Gracias por ser esa amiga especial que ilumina mis días con su alegría. Nuestra amistad en Neverland ha sido una de las aventuras más bonitas, llena de risas, complicidad y momentos inolvidables. Eres única y siempre estaré agradecido por tenerte en mi vida. ¡Te quiero mucho! 🌸🎮✨"
+};
+
+function typeWriter(elemento, texto, velocidad, callback) {
+  let i = 0;
+  const elem = document.getElementById(elemento);
+  
+  function escribir() {
+    if (i < texto.length) {
+      elem.innerHTML += texto.charAt(i);
+      i++;
+      setTimeout(escribir, velocidad);
+    } else if (callback) {
+      callback();
+    }
+  }
+  
+  escribir();
+}
+
+// Esperar 2 segundos y luego iniciar el efecto de escritura
+setTimeout(() => {
+  typeWriter("titulo-typing", textos.titulo, 100, () => {
+    setTimeout(() => {
+      typeWriter("subtitulo-typing", textos.subtitulo, 50, () => {
+        setTimeout(() => {
+          typeWriter("mensaje-typing", textos.mensaje, 30);
+        }, 300);
+      });
+    }, 300);
+  });
+}, 2000);
