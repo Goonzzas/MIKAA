@@ -101,7 +101,7 @@ body {
 /* MENSAJE PRINCIPAL CENTRADO */
 .mensaje-principal {
     position: absolute;
-    top: 10%;
+    bottom: 5%;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -156,7 +156,7 @@ body {
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .mensaje-principal {
-        top: 5%;
+        bottom: 2%;
         padding: 20px;
         width: 95%;
     }
