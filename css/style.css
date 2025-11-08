@@ -156,7 +156,8 @@ body {
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .mensaje-principal {
-        bottom: 2%;
+        bottom: auto;
+        top: 55vh;
         padding: 20px;
         width: 95%;
     }
