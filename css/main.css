@@ -1738,23 +1738,49 @@ body {
 
 /* AJUSTES RESPONSIVE PARA MÓVIL */
 @media only screen and (max-width: 600px) {
+    body {
+        align-items: flex-start;
+        padding-top: 10vh;
+    }
+    
     .flowers {
-        transform: scale(0.7);
-        height: 50vh;
+        transform: scale(0.6);
+        height: 40vh;
+        position: absolute;
+        top: 5vh;
+        left: 50%;
+        transform: translateX(-50%) scale(0.6);
+    }
+    
+    .flower {
+        bottom: 0;
     }
     
     .flower--1 {
         left: 15%;
-        bottom: 15vmin;
+        bottom: 0;
     }
     
     .flower--2 {
         left: 50%;
-        bottom: 10vmin;
+        bottom: 0;
+        transform: rotate(20deg) translateX(-50%);
     }
     
     .flower--3 {
         left: 85%;
-        bottom: 12vmin;
+        bottom: 0;
+    }
+    
+    .flower--1 .flower__line {
+        height: 30vmin;
+    }
+    
+    .flower--2 .flower__line {
+        height: 25vmin;
+    }
+    
+    .flower--3 .flower__line {
+        height: 28vmin;
     }
 }
